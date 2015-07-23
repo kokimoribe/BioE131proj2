@@ -1,0 +1,88 @@
+"""
+
+************UPSTREAM/PROMOTER*************
+-35 seq					"TTGACA"
+-10 seq (Pribnow box)	"TATAAT"
+Shine-Dalgarno			"AGGAGG" (mRNA, see Notes below)
+
+Notes: 
+-	Shine-Dalgarno sequence is a ribosomal binding site in prokaryotic mRNA, generally 
+	located around 8 bases upstream of the start codon AUG. (wikipedia)
+
+-	For design purposes, the gene to be transcribed begins at the Transcription 
+	Start Site (TSS), exactly 10 nucleotides in the 3' direction from the start 
+	of the Pribnow box. 
+
+-	Ensure that your DNA sequence contains a Pribnow box (specifically the sequence TATAAT)
+	starting at the -10 position. The composition of the -35 sequence can have more flexibility 
+	in terms of composition and position. 
+******************************************
+
+
+
+**************THE RIBO-SWITCH**************
+-	There must be a riboswitch such that (at room temperature) the Shine-Dalgarno sequence 
+	will only be exposed if the effector sequence is present.
+
+-	Assume that for an effector to successfully bind, its exact complement or reverse complement 
+	has to be present in the sequence.
+
+-	It's sufficient for a single nucleotide of the Shine-Dalgarno sequence to be base-paired
+	for it to be considered inaccessible. All six nucleotides of the Shine-Dalgarno sequence
+	must be non-base-paired for it to be considered accessible (a non-base-paired SD sequence
+	that is exposed in the loop region of a stem-loop is considered accessible).
+*******************************************
+
+
+*********PROTEIN-ENCODING REGION**********
+
+---PART 1: AMINO ACID SEQUENCE---
+-	The most conserved/variable sites in the alignment represented by protein.fasta should correspond 
+	to the most conserved/variable sites in the output.
+-	S / (sequence length), the length-normalized total column entropy in an alignment of all your encoded 
+	protein sequences (rewarding diversity in your generated protein sequences).
+-	-M, a penalty term based on the maximum percentage identity between any one of your proteins and any
+	protein from protein.fasta (rewarding generation of new sequences, rather than exact copies of the
+	sequence in that file).
+-	L / (sequence length), the length-normalized total log-likelihood of all your protein sequences using
+	a position-specific weight matrix model based on the alignment in protein.fasta (rewarding identification
+	of the conserved/variable sites).
+---------------------------------
+
+
+---PART 2: DNA CODON SEQUENCE---
+-	The DNA sequence must be in LOWER case, EXCEPT for the start and stop codons which must be in UPPER case.
+-	The relative codon usage for each amino acid should match the frequency table as closely as possible.
+-	ΔCodonFreq, the difference between the codon's frequency in your output sequence and the target frequency,
+	averaged across all codons (rewarding correct codon usage).
+--------------------------------
+******************************************
+
+
+
+***********INTRINSIC TERMINATOR***********
+-	Ensure that your intrinsic terminator is composed of a CG-rich hairpin loop (at-least 4 base-pairs) followed by
+	a poly-U tail (composed of at-least 8 sequential Uracil nucleotides). For the purposes of this project,
+	transcription will be terminated immediately after the end of the 8+ Uracil nucleotides.
+******************************************
+
+
+
+*******SEQ CHECKS AND MODIFICATIONS*******
+-	if multiple complement or reverse complement sequences occur throughout the entire length of the sequence (even
+	within the coding region), we assume the effector binds to them and those nucleotides are completely unavailable 
+	for base-pairing.
+
+-	Check for Restriction sites and their reverse complement.
+
+-	Identical codons, or synonymous codons differing only at the third position, should be spaced
+	apart as much as possible.
+	Avg Space between similar codons) / (sequence length), the average space between identical/synonymous codons, 
+	averaged for all codons and divided by sequence length (rewarding avoidance of repeat codons).
+
+-	Check output.fasta is valid FASTA format, if not valid, no further points awarded.
+******************************************
+
+
+"""
+
